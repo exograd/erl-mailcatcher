@@ -1,0 +1,6 @@
+version: "3"
+services:
+  mailcatcher:
+    image: "exograd/mailcatcher:0.7.1"
+    container_name: "mailcatcher"
+    ports: ["1080:1080", "1025:1025"]
