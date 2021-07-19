@@ -88,3 +88,22 @@ delete_messages(#{http := URI}) ->
       {error, {invalid_request, Reason}}
   end.
 
+-spec get_message(client(), message_id()) ->
+        {ok, message()} | {error, mailcatcher_error_reason()}.
+get_message(#{http := URI}, Id) ->
+  Request = #{method => get,
+              target => URI#{path => <<"/messages/", Id/binary, ".json">>}},
+  case mhttp:send_request(Request) of
+    {ok, #{status := 200, body := Bin}} ->
+      case json:parse(Bin) of
+        {ok, Data} ->
+          {ok, Data};
+        {error, Reason} ->
+          {error, {invalid_response_response, Reason}}
+      end;
+    {ok, #{status := Status, body := Bin}} ->
+      {error, {invalid_response, {Status, Bin}}};
+    {error, Reason} ->
+      {error, {invalid_request, Reason}}
+  end.
+
