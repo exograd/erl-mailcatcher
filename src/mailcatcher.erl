@@ -20,6 +20,11 @@
 -type client() ::
         #{http => uri:uri()}.
 
+-type mailcatcher_error_reason() ::
+        {invalid_json_response, json:error()}
+      | {invalid_response, {mhttp:status(), mhttp:body()}}
+      | {invalid_request, mhttp:error_reason()}.
+
 -spec new_client() -> client().
 new_client() ->
   new_client(#{}).
