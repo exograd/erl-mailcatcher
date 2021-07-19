@@ -13,3 +13,20 @@
 %% IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
 -module(mailcatcher).
+-type client_options() ::
+        #{http_host => uri:host(),
+          http_port => uri:port_number()}.
+
+-type client() ::
+        #{http => uri:uri()}.
+
+-spec new_client() -> client().
+new_client() ->
+  new_client(#{}).
+
+-spec new_client(client_options()) -> client().
+new_client(Options) ->
+  Host = maps:get(host, Options, <<"localhost">>),
+  Port = maps:get(port, Options, 1080),
+  URI = #{scheme => <<"http">>, host => Host, port => Port},
+  #{http => URI}.
