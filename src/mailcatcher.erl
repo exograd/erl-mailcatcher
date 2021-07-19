@@ -13,6 +13,13 @@
 %% IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
 -module(mailcatcher).
+
+-export([new_client/0, new_client/1,
+         list_messages/1, delete_messages/1,
+         get_message/2, delete_message/2]).
+
+-export_type([messages/0, message/0, client/0]).
+
 -type messages() :: [message()].
 
 -type message() ::
