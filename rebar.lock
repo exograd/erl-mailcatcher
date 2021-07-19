@@ -4,7 +4,7 @@
   1},
  {<<"json">>,
   {git,"https://github.com/galdor/erl-json.git",
-       {ref,"093aa31992dd958d1c9dba8337045eb647ebc2e3"}},
+       {ref,"4c07ba182c2edb02a06e62f68e4bff0e29ed810c"}},
   0},
  {<<"ksuid">>,
   {git,"https://github.com/exograd/erl-ksuid.git",
