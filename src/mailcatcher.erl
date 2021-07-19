@@ -16,7 +16,7 @@
 
 -export([new_client/0, new_client/1,
          list_messages/1, delete_messages/1,
-         get_message/2, delete_message/2]).
+         get_message/2, delete_message/2, get_message_body/3]).
 
 -export_type([messages/0, message/0, client/0]).
 
@@ -117,6 +117,22 @@ delete_message(#{http := URI}, Id) ->
       ok;
     {ok, #{status := Status, body := Bin}} ->
       {error, inavalid_response, {Status, Bin}};
+    {error, Reason} ->
+      {error, {invalid_request, Reason}}
+  end.
+
+-spec get_message_body(client(), message_id(), source | plain | html) ->
+        {ok, binary()} | {error, mailcatcher_error_reason()}.
+get_message_body(#{http := URI}, Id, Format0) ->
+  Format = atom_to_binary(Format0),
+  Request = #{method => get,
+              target =>
+                URI#{path => <<"/messages/", Id/binary, ".", Format/binary>>}},
+  case mhttp:send_request(Request) of
+    {ok, #{status := 200, body := Bin}} ->
+      {ok, Bin};
+    {ok, #{status := Status, body := Bin}} ->
+      {error, {invalid_response, {Status, Bin}}};
     {error, Reason} ->
       {error, {invalid_request, Reason}}
   end.
