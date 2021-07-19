@@ -69,3 +69,15 @@ list_messages(#{http := URI}) ->
       {error, {invalid_request, Reason}}
   end.
 
+-spec delete_messages(client()) -> ok | {error, mailcatcher_error_reason()}.
+delete_messages(#{http := URI}) ->
+  Request = #{method => delete, target => URI#{path => <<"/messages">>}},
+  case mhttp:send_request(Request) of
+    {ok, #{status := 204}} ->
+      ok;
+    {ok, #{status := Status, body := Bin}} ->
+      {error, {invalid_response, {Status, Bin}}};
+    {error, Reason} ->
+      {error, {invalid_request, Reason}}
+  end.
+
