@@ -25,7 +25,6 @@
    ]},
   {env,[]},
   {modules, []},
-
   {licenses, ["ISC"]},
   {links, []}
  ]}.
